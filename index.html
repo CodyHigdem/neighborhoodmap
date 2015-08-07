@@ -11,23 +11,11 @@
         <button id="submit-btn">Submit</button>
     </form>
 
-
-
-
-
-
-
-
-
-
-
-
-
     <hr>
 
     <h2 id="greeting" class="greeting">Where do you want to live?</h2>
-
-
+    <div id="canvasMap"></div>
+<h1> Prototype </h1>
 <iframe
   width="600"
   height="450"
@@ -51,7 +39,10 @@
         <ul id="nytimes-articles" class="article-list">What's going on in your new city? Enter an address and hit submit and the NY Times will tell you here!</ul>
     </div>
 
-    <script src="js/libs/jquery.min.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places?key=AIzaSyC48MzbbISkTqdBvaKUbsy8QLi8mNyvYoY"></script>
+    <script src="js/lib/jquery.min.js"></script>
+    <script src="js/lib/knockout-3.2.0.js"></script>
+    <script src="js/app.js"></script>
 
 
 
@@ -65,7 +56,7 @@
 
 
 
-
+<!--
 <ul data-bind="foreach: catList">
 <li data-bind="text: name, click: $parent.setCat"></li>
 </ul>
@@ -82,6 +73,7 @@
         <ul data-bind="foreach: currentCat().nicknames">
             <li data-bind="text: $data"></li>
         </ul>
+        -->
     <script src="js/lib/knockout-3.2.0.js"></script>
     <script src="js/app.js"></script>
 </body>

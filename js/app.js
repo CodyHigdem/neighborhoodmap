@@ -1,56 +1,41 @@
-marker = new google.maps.Marker({
-	map:map,
-	draggable:true,
-	animation: google.maps.Animation.DROP,
-	position: parliment
-});
-google.maps.event.addListener(marker, 'click', toggleBounce);
-
-
-
-
-
-
-
-
-
-
 var ViewModel = function(){
+    //DECLARE A BUNCH OF VARIABLES THAT ARE NEEDED
 	var self = this;
-	this.catList = ko.observableArray([]);
-
-	//lloop over each initial kat
-
-	initialCats.forEach(function(catItem){
-		self.catList.push( new Cat(catItem) );
-	});
-	//Need to make the cat
-	this.currentCat = ko.observable( this.catList()[0] );
-	/*
-	this.currentCat = ko.observable(new Cat({
+    var map,
+    city;
+    //make an empty array to store all those markers
+    this.markers = ko.observableArray([]);
 
 
+    // Initialize Google map, perform initial deal search on a city.
+  function initializeMap() {
+    //GET City LAT LONG
+    city = new google.maps.LatLng(44.972519, -93.275555);
+    //make the map documentby id from canvasMap
+    map = new google.maps.Map(document.getElementById('canvasMap'), {
+          center: city,
+          zoom: 10,
+          zoomControlOptions: {
+            position: google.maps.ControlPosition.LEFT_CENTER,
+            style: google.maps.ZoomControlStyle.SMALL
+          },
+          streetViewControlOptions: {
+            position: google.maps.ControlPosition.LEFT_BOTTOM
+            },
+          mapTypeControl: false,
+          panControl: false
+        });
+    clearTimeout(self.mapRequestTimeout);
 
+    google.maps.event.addDomListener(window, "resize", function() {
+       var center = map.getCenter();
+       google.maps.event.trigger(map, "resize");
+       map.setCenter(center);
+    });
 
-		//JUST FOR ONE CAT
-		clickCount: 0,
-		name: 'Tabby',
-		imgSrc: 'img/434164568_fea0ad4013_z.jpg',
-		imgAttribution: 'https://www.flickr.com/photos/bigtallguy/434164568',
-		nicknames: ['TabTab', 'T-bone', 'Mr. T', 'Tabitha']
-	}) );
-	*/
-	//Knockout handles almost all of the view to model nonsense. So we don't need to write as many out
-	this.incrementCounter = function(){
-		this.clickCount(this.clickCount() + 1 );
-	};
-
-	//
-
-	this.setCat = function(clickedCat) {
-		self.currentCat(clickedCat);
-	};
-
+    infowindow = new google.maps.InfoWindow({maxWidth: 300});
+  }
+  initializeMap();
 }
 
 //apply bindings to vew model
