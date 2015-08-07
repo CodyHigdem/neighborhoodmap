@@ -16,3 +16,4 @@ http://stackoverflow.com/questions/10966668/the-key-provided-is-not-a-valid-goog
 https://help.github.com/categories/github-pages-basics/
 http://lea.verou.me/2011/10/easily-keep-gh-pages-in-sync-with-master/
 https://www.thinkful.com/learn/a-guide-to-using-github-pages/
+https://developers.google.com/maps/documentation/javascript/examples/place-search
