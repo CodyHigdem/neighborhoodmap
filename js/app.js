@@ -46,15 +46,15 @@ var Model = [
       // in the future having a way to filter search maybe cool. This solution does that
       //
       self.filteredArray = ko.computed(function() {
-        return ko.utils.arrayFilter(self.allLocations(), function(item) {
-          if (item.name.toLowerCase().indexOf(self.filter().toLowerCase()) !== -1) {
-            if(item.marker)
-              item.marker.setMap(map);
+        return ko.utils.arrayFilter(self.allLocations(), function(v) {
+          if (v.name.toLowerCase().indexOf(self.filter().toLowerCase()) !== -1) {
+            if(v.marker)
+              v.marker.setMap(map);
           } else {
-            if(item.marker)
-              item.marker.setMap(null);
+            if(v.marker)
+              v.marker.setMap(null);
           }
-          return item.name.toLowerCase().indexOf(self.filter().toLowerCase()) !== -1;
+          return v.name.toLowerCase().indexOf(self.filter().toLowerCase()) !== -1;
         });
       }, self);
 
@@ -95,12 +95,12 @@ var Model = [
 
         $.getJSON(foursquareUrl, function(data) {
           if(data.response.venues){
-            var item = data.response.venues[0];
+            var v = data.response.venues[0];
             //let's see what we got
-            console.log(item);
-            //add the item into the allLocations, this will be used to push into placeMarkers
-            allLocations.push(item);
-            location = {lat: item.location.lat, lng: item.location.lng, name: item.name, loc: item.location.address + " " + item.location.city + ", " + item.location.state + " " + item.location.postalCode};
+            console.log(v);
+            //add the v into the allLocations, this will be used to push into placeMarkers
+            allLocations.push(v);
+            location = {lat: v.location.lat, lng: v.location.lng, name: v.name, loc: v.location.address + " " + v.location.city + ", " + v.location.state + " " + v.location.postalCode};
             locationDataArr.push(location);
             placeMarkers(allLocations, place, location, map, markers);
           } else {
@@ -111,8 +111,7 @@ var Model = [
       }
     }
 
-
-    // place marker for the result locations on the map
+  // place marker for the result locations on the map
   function placeMarkers(allLocations, place, data, map, markers) {
     var latlng = new google.maps.LatLng(data.lat, data.lng);
     var marker = new google.maps.Marker({

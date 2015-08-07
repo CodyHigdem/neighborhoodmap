@@ -3,7 +3,14 @@
 ###Demo
 [Demo](http://qtheninja.github.io/neighborhoodmap/)
 
+## Installation and Operation
 
+1. Download the zip folder.
+2. Navigate to the folder.
+3. Right click and open with--> google chrome
+4. You should see the map area as it is in the demo.
+
+To make customizations there is a data block called Model that you can change the lat/long of any area as well as the name.
 
 ##Citations:
 http://www.codeproject.com/Articles/351298/KnockoutJS-and-Google-Maps-binding
