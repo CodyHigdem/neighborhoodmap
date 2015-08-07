@@ -10,15 +10,6 @@ function appViewModel() {
   this.lat = ko.observable(44.969039);
   this.lng = ko.observable(-93.287428);
 
-
-
-
-
-
-
-
-
-
   //Error handling if Google Maps fails to load
   this.mapRequestTimeout = setTimeout(function() {
     $('#map-canvas').html('Google mapes is not loading. Please refresh your browser and try again.');
@@ -49,44 +40,20 @@ function appViewModel() {
     });
 
     infowindow = new google.maps.InfoWindow({maxWidth: 300});
-
+    mapMarkers(venuesList)
 
   }
 
-//4SQUARE
-/*
 
-//userless
-//  https://api.foursquare.com/v2/venues/search?ll=40.7,-74&
-client_id=WU5UYEORI3OKUCGR5YKUBTAEYOJ2ZPZ4MFY1OAGK3CHIGKVY
-&client_secret=G3FWJUY3LILJCKTQJE5B1UVPSAEWEMHNWYQQ21ZBRVKDFTLR
-&v=20131017
-&near=minneapolis,mn
-
-*/
-
-/*
-
-        $.getJSON('https://api.foursquare.com/v2/venues/search?ll=40.7,-74&
-client_id=WU5UYEORI3OKUCGR5YKUBTAEYOJ2ZPZ4MFY1OAGK3CHIGKVY
-&client_secret=G3FWJUY3LILJCKTQJE5B1UVPSAEWEMHNWYQQ21ZBRVKDFTLR
-&v=20131017
-&near=minneapolis,mn', function(data) {
-    // Now use this data to update your view models,
-    // and Knockout will update your UI automatically
-    console.log(data);
-})
-*/
 
 
 
 // Create and place markers and info windows on the map based on data from API
   function mapMarkers(array) {
     $.each(array, function(index, value) {
-      var latitude = value.dealLat,
-          longitude = value.dealLon,
-          geoLoc = new google.maps.LatLng(latitude, longitude),
-          thisRestaurant = value.dealName;
+      var latitude = value.venueLat,
+          longitude = value.venueLng,
+          geoLoc = new google.maps.LatLng(latitude, longitude);
 
       var contentString = '<div id="infowindow">' +
       '<img src="' + value.dealImg + '">' +
@@ -95,13 +62,13 @@ client_id=WU5UYEORI3OKUCGR5YKUBTAEYOJ2ZPZ4MFY1OAGK3CHIGKVY
       '<p class="rating">' + value.dealRating + '</p>' +
       '<p><a href="' + value.dealLink + '" target="_blank">Click to view deal</a></p>' +
       '<p>' + value.dealBlurb + '</p></div>';
-
+      console.log(contentString);
       var marker = new google.maps.Marker({
         position: geoLoc,
-        title: thisRestaurant,
+        title: value.venueName,
         map: map
       });
-
+      console.log(marker);
       self.mapMarkers.push({marker: marker, content: contentString});
 
       self.dealStatus(self.numDeals() + ' food and drink deals found near ' + self.searchLocation());
@@ -118,13 +85,7 @@ client_id=WU5UYEORI3OKUCGR5YKUBTAEYOJ2ZPZ4MFY1OAGK3CHIGKVY
     });
   }
 
-// Clear markers from map and array
-  function clearMarkers() {
-    $.each(self.mapMarkers(), function(key, value) {
-      value.marker.setMap(null);
-    });
-    self.mapMarkers([]);
-  }
+
 
   function fetch4Square(){
     var foursquareURL = 'https://api.foursquare.com/v2/venues/search?ll=40.7,-74&client_id=WU5UYEORI3OKUCGR5YKUBTAEYOJ2ZPZ4MFY1OAGK3CHIGKVY&client_secret=G3FWJUY3LILJCKTQJE5B1UVPSAEWEMHNWYQQ21ZBRVKDFTLR&v=20131017&near=minneapolis,mn';
@@ -133,7 +94,7 @@ client_id=WU5UYEORI3OKUCGR5YKUBTAEYOJ2ZPZ4MFY1OAGK3CHIGKVY
     url: foursquareURL,
     dataType: 'json',
     success: function(data){
-      console.log(data.response.venues);
+      //console.log(data.response.venues);
       var venues = data.response.venues;
       var venuesCount = venues.length;
 
@@ -144,23 +105,26 @@ client_id=WU5UYEORI3OKUCGR5YKUBTAEYOJ2ZPZ4MFY1OAGK3CHIGKVY
         venueLng = v.location.lng,
         venueAddress = v.location.address,
         venueURL = v.url;
-        console.log(v.name);
-        console.log(venueLat);
-        console.log(venueLng);
-        console.log(venueURL);
-        console.log(venueAddress);
 
-          venuesList.push({venueName, venueLat, venueLng});
 
+          venuesList.push(venueName, venueLat, venueLng);
+        var marker = new google.maps.Marker({
+          map: map,
+          position: new google.maps.LatLng(venueLat,venueLng),
+          title: vname
+        });
+        mapMarkers.push(marker);
       }
       console.log("this is the venue list: " + venuesList[3].venueName);
-
+      console.log("your map markers: " + mapMarkers);
     },
     error: function(data){
       console.log('oopsie, something went wrong try again in a little bit');
 
     }
   });
+
+
 
   }
 
