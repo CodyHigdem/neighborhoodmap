@@ -1,10 +1,9 @@
 function appViewModel() {
   var self = this;
   var map, city, infowindow;
-
+  var venuesList = [];
 
   this.mapMarkers = ko.observableArray([]);  //holds all map markers
-
 
 
   //Hold the current location's lat & lng - useful for re-centering map
@@ -150,7 +149,12 @@ client_id=WU5UYEORI3OKUCGR5YKUBTAEYOJ2ZPZ4MFY1OAGK3CHIGKVY
         console.log(venueLng);
         console.log(venueURL);
         console.log(venueAddress);
+
+          venuesList.push({venueName, venueLat, venueLng});
+
       }
+      console.log("this is the venue list: " + venuesList[3].venueName);
+
     },
     error: function(data){
       console.log('oopsie, something went wrong try again in a little bit');
