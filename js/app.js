@@ -1,6 +1,6 @@
 $(document).ready(function(){
     var self = this;
-    var sanjose, map, infoWindow;
+    var mpls, map, infoWindow;
 
 // let's make a data model of some places around Mpls
 var Model = [

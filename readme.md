@@ -24,3 +24,5 @@ https://help.github.com/categories/github-pages-basics/
 http://lea.verou.me/2011/10/easily-keep-gh-pages-in-sync-with-master/
 https://www.thinkful.com/learn/a-guide-to-using-github-pages/
 https://developers.google.com/maps/documentation/javascript/examples/place-search
+https://24ways.org/2013/get-started-with-github-pages/
+
