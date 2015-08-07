@@ -13,10 +13,6 @@ var Model = [
       "latlng": [44.979124, -93.274664]
     },
     {
-      "name": "Cafe & Bar Lurcat",
-      "latlng": [44.971299, -93.286176]
-    },
-    {
       "name": "Sisyphus Brewing",
       "latlng": [44.973243, -93.288848]
     },
@@ -27,10 +23,6 @@ var Model = [
     {
       "name": "Grain Exchange",
       "latlng": [44.977730, -93.263776]
-    },
-    {
-      "name": "Butcher and the Boar",
-      "latlng": [44.974826, -93.279689]
     }
 ];
 
@@ -39,10 +31,7 @@ var Model = [
       //make an array to hold the google map markers, it will be empty at first in the future we can then clear them.
       self.markers = ko.observableArray([]);
       self.allLocations = ko.observableArray([]);
-
-
       self.filter =  ko.observable("");
-      self.search = ko.observable("");
 
       var map = initializeMap();
       // check to see if the map is being created or not, if not...let the user know
@@ -54,6 +43,8 @@ var Model = [
       fetchFoursquare(self.allLocations, self.map(), self.markers);
 
       // Based on the search keywords filter the list view
+      // in the future having a way to filter search maybe cool. This solution does that
+      //
       self.filteredArray = ko.computed(function() {
         return ko.utils.arrayFilter(self.allLocations(), function(item) {
           if (item.name.toLowerCase().indexOf(self.filter().toLowerCase()) !== -1) {
@@ -72,23 +63,26 @@ var Model = [
       };
     };
 
-    // Initialize Google map based on predefined San Jose position
+    // Initialize google map
     function initializeMap() {
 
       var mapOptions = {
         center: new google.maps.LatLng(44.974726, -93.277436),
-        zoom: 12,
+        zoom: 15,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       return new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
     }
 
-
     // get location data from foursquare
     function fetchFoursquare(allLocations, map, markers) {
       var locationDataArr = [];
+      //leaving this here incase I change the way I want the foursquare url to be
       var foursquareUrl = "";
       var location = [];
+      //iterate through all the places in the Model listed above
+      //Then put the latlong founds from google maps what's here
+      //query the foursquare api and get back data
       for (var place in Model) {
         foursquareUrl = 'https://api.foursquare.com/v2/venues/search' +
           '?client_id=WU5UYEORI3OKUCGR5YKUBTAEYOJ2ZPZ4MFY1OAGK3CHIGKVY' +
@@ -102,6 +96,7 @@ var Model = [
         $.getJSON(foursquareUrl, function(data) {
           if(data.response.venues){
             var item = data.response.venues[0];
+            //let's see what we got
             console.log(item);
             //add the item into the allLocations, this will be used to push into placeMarkers
             allLocations.push(item);
