@@ -1,18 +1,34 @@
-var ViewModel = function(){
-    //DECLARE A BUNCH OF VARIABLES THAT ARE NEEDED
-	var self = this;
-    var map,
-    city;
-    //make an empty array to store all those markers
-    this.markers = ko.observableArray([]);
+function appViewModel() {
+  var self = this;
+  var map, city, infowindow;
 
 
-    // Initialize Google map, perform initial deal search on a city.
+  this.mapMarkers = ko.observableArray([]);  //holds all map markers
+
+
+
+  //Hold the current location's lat & lng - useful for re-centering map
+  this.lat = ko.observable(44.969039);
+  this.lng = ko.observable(-93.287428);
+
+
+
+
+
+
+
+
+
+
+  //Error handling if Google Maps fails to load
+  this.mapRequestTimeout = setTimeout(function() {
+    $('#map-canvas').html('Google mapes is not loading. Please refresh your browser and try again.');
+  }, 8000);
+
+// Initialize Google map, perform initial deal search on a city.
   function initializeMap() {
-    //GET City LAT LONG
-    city = new google.maps.LatLng(44.972519, -93.275555);
-    //make the map documentby id from canvasMap
-    map = new google.maps.Map(document.getElementById('canvasMap'), {
+    city = new google.maps.LatLng(44.969039, -93.287428);
+    map = new google.maps.Map(document.getElementById('map-canvas'), {
           center: city,
           zoom: 10,
           zoomControlOptions: {
@@ -34,118 +50,135 @@ var ViewModel = function(){
     });
 
     infowindow = new google.maps.InfoWindow({maxWidth: 300});
+
+
   }
-  initializeMap();
-}
 
-//apply bindings to vew model
-ko.applyBindings(new ViewModel());
+//4SQUARE
+/*
+
+//userless
+//  https://api.foursquare.com/v2/venues/search?ll=40.7,-74&
+client_id=WU5UYEORI3OKUCGR5YKUBTAEYOJ2ZPZ4MFY1OAGK3CHIGKVY
+&client_secret=G3FWJUY3LILJCKTQJE5B1UVPSAEWEMHNWYQQ21ZBRVKDFTLR
+&v=20131017
+&near=minneapolis,mn
+
+*/
+
+/*
+
+        $.getJSON('https://api.foursquare.com/v2/venues/search?ll=40.7,-74&
+client_id=WU5UYEORI3OKUCGR5YKUBTAEYOJ2ZPZ4MFY1OAGK3CHIGKVY
+&client_secret=G3FWJUY3LILJCKTQJE5B1UVPSAEWEMHNWYQQ21ZBRVKDFTLR
+&v=20131017
+&near=minneapolis,mn', function(data) {
+    // Now use this data to update your view models,
+    // and Knockout will update your UI automatically
+    console.log(data);
+})
+*/
+
+
+
+// Create and place markers and info windows on the map based on data from API
+  function mapMarkers(array) {
 
 
 
 
+    $.each(array, function(index, value) {
+      var latitude = value.dealLat,
+          longitude = value.dealLon,
+          geoLoc = new google.maps.LatLng(latitude, longitude),
+          thisRestaurant = value.dealName;
 
+      var contentString = '<div id="infowindow">' +
+      '<img src="' + value.dealImg + '">' +
+      '<h2>' + value.dealName + '</h2>' +
+      '<p>' + value.dealAddress + '</p>' +
+      '<p class="rating">' + value.dealRating + '</p>' +
+      '<p><a href="' + value.dealLink + '" target="_blank">Click to view deal</a></p>' +
+      '<p>' + value.dealBlurb + '</p></div>';
 
+      var marker = new google.maps.Marker({
+        position: geoLoc,
+        title: thisRestaurant,
+        map: map
+      });
 
+      self.mapMarkers.push({marker: marker, content: contentString});
 
+      self.dealStatus(self.numDeals() + ' food and drink deals found near ' + self.searchLocation());
 
+      //generate infowindows for each deal
+      google.maps.event.addListener(marker, 'click', function() {
+        self.searchStatus('');
+         infowindow.setContent(contentString);
+         map.setZoom(14);
+         map.setCenter(marker.position);
+         infowindow.open(map, marker);
+         map.panBy(0, -150);
+       });
+    });
+  }
 
+// Clear markers from map and array
+  function clearMarkers() {
+    $.each(self.mapMarkers(), function(key, value) {
+      value.marker.setMap(null);
+    });
+    self.mapMarkers([]);
+  }
 
-
-
-
-
-
-
-
-
-
-function loadData() {
-
-    var $body = $('body');
-    var $wikiElem = $('#wikipedia-links');
-    var $nytHeaderElem = $('#nytimes-header');
-    var $nytElem = $('#nytimes-articles');
-    var $greeting = $('#greeting');
-
-    // clear out old data before new request
-    $wikiElem.text("");
-    $nytElem.text("");
-    //MAKE STREET VARIABLES
-    var street = $('#street').val();
-    var city =  $('#city').val();
-    var address = street + ', ' + city;
-    // load streetview
-    $greeting.text('So, you want to live at ' + address + '?');
-
-    // make url
-    var streetView = 'http://maps.googleapis.com/maps/api/streetview?size=600x400&location=' + address;
-
-    //from udacity course, look at the append it's a body spot woot
-    $body.append('<img class="bgimg" src="'+ streetView +'">');
-
-    //NYT AJAX request now
-    //New York Times API Key that I had to register for
-    var NYTArticleAPIKey = '000173a466a102376321f0305ae688ad:0:72602592';
-    //MAKE A URL VAR
-    var nytURL = 'http://api.nytimes.com/svc/search/v2/articlesearch.json?q=' + city + '&sort=newest&api-key=' + NYTArticleAPIKey;
-    //$.getJSON();
-    //parse
-    //console.log it, use <li>
-    $.getJSON( nytURL, function( data ) {
-        //from udacity
-        $nytHeaderElem.text('New York Times Articles About ' + city);
-        console.log(data.response.docs);
-        articles = data.response.docs;
-
-        for (var i = 0; i < articles.length; i++) {
-            var article = articles[i];
-            $nytElem.append('<li> <a href="' + article.web_url + '">' + article.headline.main + '</a><p>' + article.snippet + '</p></li>');
-        };
-
-  }).error(function(e){
-    $nytElem.text('New York Time Articles could not be loaded.');
-  });
-
-  //wikipedia api
-  // Use .ajax(); url, datatype, no success function parameter so set it to a function that you want to run, <ul id="wikipedia-links"></ul>
-
-  //Make a url var
-  var wikiURL = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + city + '&format=json&callback=wikiCallback';
-  //udacity said there was no way to have proper error handling on ajax and made this suggestion for a way to handle it was to wait this long and if there is nothing back then it was
-  // an error.
-  var wikiRequestTimeout = setTimeout(function(){
-    $wikiElem.text("Failed to get wikipedia resources");
-  }, 8000);
+  function fetch4Square(){
+    var foursquareURL = 'https://api.foursquare.com/v2/venues/search?ll=40.7,-74&client_id=WU5UYEORI3OKUCGR5YKUBTAEYOJ2ZPZ4MFY1OAGK3CHIGKVY&client_secret=G3FWJUY3LILJCKTQJE5B1UVPSAEWEMHNWYQQ21ZBRVKDFTLR&v=20131017&near=minneapolis,mn';
 
   $.ajax({
-    //url could have gone between ( and { or placed here
-    url: wikiURL,
-    dataType: 'jsonp',
-    //UDACITY has jsonp: "callback", some apis have the default function name callback
-    //make the call back function
-    success: function( response){
-        console.log(response);
-        console.log(response[0]);
-        console.log(response[1]);
-
-        var articleList= response[1];
-
-        for (var i = 0; i < articleList.length; i++){
-            articleStr = articleList[i];
-            var url = 'http://en.wikipedia.org/wiki/' + articleStr;
-            $wikiElem.append('<li><a href="' + url + '">' + articleStr + '</a></li>');
-        };
-        //If we don't use 'clearTimeout' then after we get the request the time out above var wikiRequestTimeout will override our data, not good
-        clearTimeout(wikiRequestTimeout);
+    url: foursquareURL,
+    dataType: 'json',
+    success: function(data){
+      console.log(data);
+    },
+    error: function(data){
+      console.log('oopsie, something went wrong try again in a little bit');
+      console.log(data);
     }
-  })
+  });
+
+  }
 
 
 
 
 
-    return false;
-};
 
-$('#form-container').submit(loadData);
+  //Re-center map to current city if you're viewing deals that are further away
+  this.centerMap = function() {
+    infowindow.close();
+    var currCenter = map.getCenter();
+    var cityCenter = new google.maps.LatLng(self.currentLat(), self.currentLng());
+    if((cityCenter.k == currCenter.A) && (cityCenter.D == currCenter.F)) {
+        self.searchStatus('Map is already centered.');
+    } else {
+      self.searchStatus('');
+      map.panTo(cityCenter);
+      map.setZoom(10);
+    }
+  };
+
+  initializeMap();
+  fetch4Square();
+}
+
+//custom binding highlights the search text on focus
+
+ko.bindingHandlers.selectOnFocus = {
+        update: function (element) {
+          ko.utils.registerEventHandler(element, 'focus', function (e) {
+            element.select();
+          });
+        }
+      };
+
+ko.applyBindings(new appViewModel());
