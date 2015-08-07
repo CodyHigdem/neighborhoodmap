@@ -1,11 +1,11 @@
 # Neighborhood Udacity Project
 
-
+###Demo
 [Demo](http://qtheninja.github.io/neighborhoodmap/)
 
 
 
-Citations:
+##Citations:
 http://www.codeproject.com/Articles/351298/KnockoutJS-and-Google-Maps-binding
 http://sameersegal.github.io/KnockOutTweety/
 http://stackoverflow.com/questions/21960214/google-map-looped-markers-wont-close-previous-infowindow
