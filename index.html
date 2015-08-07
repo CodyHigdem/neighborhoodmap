@@ -1,73 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <title>Cat Clicker</title>
-      <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Minneapolis Neighborhood Project</title>
+        <meta name="description" content="Neighborhood Project">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel = "stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/main.css">
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places&key=AIzaSyC48MzbbISkTqdBvaKUbsy8QLi8mNyvYoY"></script>
+    </head>
+    <body>
 
 
+        <!-- Add your site or application content here -->
+        <h2>Places to visit in this Minneapolis neightborhood </h2>
 
-    <div id="map-canvas"></div>
+        <div id="map-canvas"></div>
+        <!-- Search form -->
+        <div class="row">
+            <div class="col-md-2 search-form">
 
+            <ul data-bind="foreach: filteredArray" class="list-view">
+                <li data-bind="text: name, click: $root.clickHandler"></li>
+            </ul>
+            </div>
+        </div>
 
-
-
-
-
-
-<!--
-    <div class="wikipedia-container">
-        <h3 id="wikipedia-header">Relevant Wikipedia Links</h3>
-        <ul id="wikipedia-links">Type in an address above and find relevant Wikipedia articles here!</ul>
-    </div>
-
-
-    <div class="nytimes-container">
-        <h3 id="nytimes-header">New York Times Articles</h3>
-        <ul id="nytimes-articles" class="article-list">What's going on in your new city? Enter an address and hit submit and the NY Times will tell you here!</ul>
-    </div>
--->
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places?key=AIzaSyC48MzbbISkTqdBvaKUbsy8QLi8mNyvYoY"></script>
-    <script src="js/lib/jquery.min.js"></script>
-    <script src="js/lib/knockout-3.2.0.js"></script>
-    <script src="js/app.js"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--
-<ul data-bind="foreach: catList">
-<li data-bind="text: name, click: $parent.setCat"></li>
-</ul>
-    <ul id="cat-list"></ul>
-    <div data-bind="with:currentCat">
-
-        <h2 data-bind = "text: name" id="cat-name"></h2> <h3 data-bind = "text: level"></h3>
-        <div data-bind = "text: clickCount" id="cat-count"></div>
-        <img data-bind = "click: $parent.incrementCounter, attr: {src: imgSrc}" src="" alt="cute cat">
-
-    </div>
-    <div>
-        <h3>Nickname:</h3>
-        <ul data-bind="foreach: currentCat().nicknames">
-            <li data-bind="text: $data"></li>
-        </ul>
-        -->
-    <script src="js/lib/knockout-3.2.0.js"></script>
-    <script src="js/app.js"></script>
-</body>
+        <script src="js/knockout-3.3.0.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src ="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="js/app.js"></script>
+    </body>
 </html>
