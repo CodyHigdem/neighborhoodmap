@@ -83,10 +83,6 @@ client_id=WU5UYEORI3OKUCGR5YKUBTAEYOJ2ZPZ4MFY1OAGK3CHIGKVY
 
 // Create and place markers and info windows on the map based on data from API
   function mapMarkers(array) {
-
-
-
-
     $.each(array, function(index, value) {
       var latitude = value.dealLat,
           longitude = value.dealLon,
@@ -138,11 +134,27 @@ client_id=WU5UYEORI3OKUCGR5YKUBTAEYOJ2ZPZ4MFY1OAGK3CHIGKVY
     url: foursquareURL,
     dataType: 'json',
     success: function(data){
-      console.log(data);
+      console.log(data.response.venues);
+      var venues = data.response.venues;
+      var venuesCount = venues.length;
+
+      for (var i = 0; i < venuesCount; i++){
+        var v = venues[i];
+        venueName = v.name,
+        venueLat = v.location.lat,
+        venueLng = v.location.lng,
+        venueAddress = v.location.address,
+        venueURL = v.url;
+        console.log(v.name);
+        console.log(venueLat);
+        console.log(venueLng);
+        console.log(venueURL);
+        console.log(venueAddress);
+      }
     },
     error: function(data){
       console.log('oopsie, something went wrong try again in a little bit');
-      console.log(data);
+
     }
   });
 
@@ -170,15 +182,5 @@ client_id=WU5UYEORI3OKUCGR5YKUBTAEYOJ2ZPZ4MFY1OAGK3CHIGKVY
   initializeMap();
   fetch4Square();
 }
-
-//custom binding highlights the search text on focus
-
-ko.bindingHandlers.selectOnFocus = {
-        update: function (element) {
-          ko.utils.registerEventHandler(element, 'focus', function (e) {
-            element.select();
-          });
-        }
-      };
 
 ko.applyBindings(new appViewModel());
