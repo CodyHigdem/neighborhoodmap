@@ -28,20 +28,15 @@ html {
   text-shadow: none;
 }
 
-html {
-  height: 100%;
-}
 
 body {
-  height: 100%;
-  margin: 0;
   padding: 0;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
 }
 
-#map-canvas {
-  height: 100%;
-  width: 100%;
+.map-canvas {
+  height: 90vh;
+  width: 80vw;
 }
 
 h1 {
@@ -61,16 +56,12 @@ li {
 }
 
 .list-view {
-  display: block;
-  position: fixed;
-  top: 60px;
   z-index: 1000;
   float: right;
   left: 50px;
   min-width: 200px;
   overflow: auto;
   padding: 5px;
-  margin: 2px 90px 0;
   font-size: 14px;
   text-align: left;
   list-style: none;
