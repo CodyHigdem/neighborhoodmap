@@ -29,8 +29,14 @@ var Model = [
       var self = this;
       //make an array to hold the google map markers, it will be empty at first in the future we can then clear them.
       self.markers = ko.observableArray([]);
+      //This is the array we're going to store all of the locations in eventually
       self.allLocations = ko.observableArray([]);
+
       self.filter =  ko.observable("");
+
+      //forgot to make a search bar
+      //hopefully
+      self.search = ko.observable("");
 
       var map = initializeMap();
       // check to see if the map is being created or not, if not...let the user know
@@ -153,6 +159,36 @@ function toggleBounce(marker) {
     }, 600);
   }
 }
+
+      // Based on the search keywords filter the list view
+      self.filteredArray = ko.computed(function() {
+        return ko.utils.arrayFilter(self.allLocations(), function(item) {
+          if (item.name.toLowerCase().indexOf(self.filter().toLowerCase()) !== -1) {
+            if(item.marker)
+              item.marker.setMap(map);
+          } else {
+            if(item.marker)
+              item.marker.setMap(null);
+          }
+          return item.name.toLowerCase().indexOf(self.filter().toLowerCase()) !== -1;
+        });
+      }, self);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // clickHandler on location list view
 function centerLocation(data, map, markers) {
