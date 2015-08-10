@@ -131,7 +131,9 @@ var Model = [
     // show details info about location when user clicks on a marker
     google.maps.event.addListener(marker, 'click', function() {
       // close the open infowindow
-      for (var i = 0; i < markers().length; i++) {
+      //get markercount
+      var markerCount = markers().length;
+      for (var i = 0; i < markerCount; i++) {
         markers()[i].infowindow.close();
       }
       infoWindow.open(map, marker);
@@ -142,13 +144,16 @@ var Model = [
       toggleBounce(marker);
     });
 }
-//make it bounce!
+/* make it bounce!
+* marker is the google object that's being clicked/location being clicked
+*/
 function toggleBounce(marker) {
   if (marker.setAnimation() != null) {
     marker.setAnimation(null);
   } else {
     /*This is the call that allows the marker to keep bouncing
     * letting the user know that it's still an active location
+    * https://developers.google.com/maps/documentation/javascript/examples/marker-animations
     */
     marker.setAnimation(google.maps.Animation.BOUNCE);
   }
