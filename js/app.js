@@ -91,8 +91,6 @@ $(document).ready(function() {
             $.getJSON(foursquareUrl, function(data) {
                 if (data.response.venues) {
                     var v = data.response.venues[0];
-                    //let's see what we got
-                    console.log(v);
                     //add the v into the allLocations, this will be used to push into placeMarkers
                     allLocations.push(v);
                     location = {
@@ -149,13 +147,13 @@ $(document).ready(function() {
      * marker is the google object that's being clicked/location being clicked
      */
     var currentMarker = null;
+
     function toggleBounce(marker, markers) {
-      if (currentMarker) {
-        currentMarker.setAnimation(null);
-      }
+        if (currentMarker) {
+            currentMarker.setAnimation(null);
+        }
 
         if (marker.setAnimation() != null) {
-            console.log('null animation');
             marker.setAnimation(null);
         } else {
             /*This is the call that allows the marker to keep bouncing
@@ -164,8 +162,6 @@ $(document).ready(function() {
              */
             marker.setAnimation(google.maps.Animation.BOUNCE);
             currentMarker = marker;
-            console.log(currentMarker);
-            console.log('make it bounce');
         }
     }
 
@@ -180,8 +176,8 @@ $(document).ready(function() {
         map.setCenter(new google.maps.LatLng(data.location.lat, data.location.lng));
         map.setZoom(15);
         for (var i = 0; i < markers().length; i++) {
-          consol.log('let');
-                      marker[i].setAnimation(null);
+            consol.log('let');
+            marker[i].setAnimation(null);
             var content = markers()[i].content.split('<br>');
             if (data.name === content[0]) {
 
