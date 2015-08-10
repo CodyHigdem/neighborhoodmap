@@ -142,14 +142,20 @@ $(document).ready(function() {
 
         // toggle bounce when user clicks on a location marker on google map
         google.maps.event.addListener(marker, 'click', function() {
-            toggleBounce(marker);
+            toggleBounce(marker, self.markers);
         });
     }
     /* make it bounce!
      * marker is the google object that's being clicked/location being clicked
      */
-    function toggleBounce(marker) {
+    var currentMarker = null;
+    function toggleBounce(marker, markers) {
+      if (currentMarker) {
+        currentMarker.setAnimation(null);
+      }
+
         if (marker.setAnimation() != null) {
+            console.log('null animation');
             marker.setAnimation(null);
         } else {
             /*This is the call that allows the marker to keep bouncing
@@ -157,11 +163,11 @@ $(document).ready(function() {
              * https://developers.google.com/maps/documentation/javascript/examples/marker-animations
              */
             marker.setAnimation(google.maps.Animation.BOUNCE);
+            currentMarker = marker;
+            console.log(currentMarker);
+            console.log('make it bounce');
         }
     }
-
-
-
 
     // clickHandler on location list view
     function centerLocation(data, map, markers) {
@@ -169,12 +175,16 @@ $(document).ready(function() {
         //http://stackoverflow.com/questions/21960214/google-map-looped-markers-wont-close-previous-infowindow
         for (var i = 0; i < markers().length; i++) {
             markers()[i].infowindow.close();
+            marker[i].setAnimation(null);
         }
         map.setCenter(new google.maps.LatLng(data.location.lat, data.location.lng));
-        map.setZoom(12);
+        map.setZoom(15);
         for (var i = 0; i < markers().length; i++) {
+          consol.log('let');
+                      marker[i].setAnimation(null);
             var content = markers()[i].content.split('<br>');
             if (data.name === content[0]) {
+
                 toggleBounce(markers()[i]);
             }
         }
