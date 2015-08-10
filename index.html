@@ -36,7 +36,8 @@
           </ul>
           <form class="navbar-form navbar-left" role="search">
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="Search">
+              <!-- This the search/filter form below is attached to:         self.filter = ko.observable("");-->
+              <input data-bind="textInput: filter" type="text" class="form-control" placeholder="Filter recommended locations">
             </div>
             <button type="submit" class="btn btn-default">Submit</button>
           </form>
@@ -44,7 +45,17 @@
       </div>
     </nav>
     <!-- END NAV-BAR -->
-    <div class="map-canvas" id="map-canvas"></div>
+    <div class="container-fluid">
+      <div class="col-md-2">
+        <input data-bind="textInput: filter" type="text" class="form-control" placeholder="Filter recommended locations">
+        <ul data-bind="foreach: filteredArray" class="list-view">
+          <li data-bind="text: name, click: $root.clickHandler"></li>
+        </ul>
+      </div>
+      <div class="col-md-10">
+        <div class="map-canvas" id="map-canvas"></div>
+      </div>
+    </div>
     <!-- JS include Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
