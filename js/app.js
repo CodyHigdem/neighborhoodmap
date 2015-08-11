@@ -28,6 +28,33 @@ $(document).ready(function() {
         //Grab the filter, put it into a data-bind with the input
         self.filter = ko.observable("");
 
+        /*
+
+*/
+
+//  Handle show/hide toggle yourself
+$(function(){
+
+    //  Handle show/hide toggle yourself
+    $(".dropdown").on("click",function(e) {
+        if($(e.currentTarget).hasClass("open"))
+            $(e.currentTarget).toggleClass("open",false);
+        else 
+            $(e.currentTarget).toggleClass("open",true);
+        e.preventDefault(); 
+        return false;
+    });
+
+    //  suppressing default bahavior
+    $(".dropdown").on("hide.bs.dropdown", doNothing);            
+    $(".dropdown").on("show.bs.dropdown", doNothing);
+
+    function doNothing() {
+        e.preventDefault(); 
+        return false;
+    }
+});
+
         var map = initializeMap();
         // check to see if the map is being created or not, if not...let the user know
         if (!map) {

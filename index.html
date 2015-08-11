@@ -27,10 +27,10 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
           <ul class="nav navbar-nav">
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Recommended Neighborhood Spots <span class="caret"></span></a>
               <ul data-bind="foreach: filteredArray" class="list-view dropdown-menu" role="menu">
-                <li data-bind="text: name, click: $root.clickHandler"></li>
+                <li data-bind="text: name, click: $root.clickHandler" class="list"></li>
               </ul>
             </li>
           </ul>
@@ -48,7 +48,7 @@
       <div class="col-md-2">
         <input data-bind="textInput: filter" type="text" class="form-control" placeholder="Filter recommended locations">
         <ul data-bind="foreach: filteredArray" class="list-view">
-          <li data-bind="text: name, click: $root.clickHandler"></li>
+          <li data-bind="text: name, click: $root.clickHandler" class="list"></li>
         </ul>
       </div>
       <div class="col-md-10">
@@ -59,6 +59,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src ="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="js/app.js"></script>
   </body>
 </html>
