@@ -28,15 +28,14 @@ html {
   text-shadow: none;
 }
 
-
 body {
   padding: 0;
   font-family: "Lato", sans-serif;
 }
 
 .map-canvas {
-  height: 90vh;
-  width: 80vw;
+  height: 88vh;
+  width: 98vw;
 }
 
 h1 {
@@ -75,7 +74,7 @@ li {
   box-shadow: 0 6px 12px rgba(0,0,0,.175);
 }
 
-.list-view li {
+.list {
   padding: 4px;
   border-bottom: 1px dashed #999;
 }
@@ -88,6 +87,38 @@ li:hover {
   background-color: #ddd;
 }
 
-li.active {
-  background-color: #ddd;
+.menu {
+  list-style: none;
+  line-height: 42px;
+  margin: auto;
+  padding-left: 0;
+  width: 15em;
+}
+
+.nav-side {
+  background: rgba(41,128,185,1);
+  padding-right: .25em;
+  position: absolute;
+  left: -18em;
+  top: 0;
+  padding-top: 5em;
+  box-sizing: border-box;
+  z-index: 20;
+  height: 100%;
+  -webkit-transition: all .3s;
+  -o-transition: all .3s;
+  transition: all .3s;
+}
+
+.active { left: 0; }
+
+.mobile-nav {
+  background: url(menu-icon.png);
+  cursor: pointer;
+  left: 2em;
+  height: 30px;
+  position: absolute;
+  top: 2em;
+  width: 30px;
+  z-index: 30;
 }

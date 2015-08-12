@@ -27,7 +27,6 @@ $(document).ready(function() {
         //I think this is technically two way model binding? /3way model binding??
         //Grab the filter, put it into a data-bind with the input
         self.filter = ko.observable("");
-
         var map = initializeMap();
         // check to see if the map is being created or not, if not...let the user know
         if (!map) {
@@ -36,6 +35,13 @@ $(document).ready(function() {
         }
         self.map = ko.observable(map);
         fetchFoursquare(self.allLocations, self.map(), self.markers);
+
+        /*
+        JS needed to make collapsible menu
+        */
+        $('#mobile-nav').click(function(event) {
+            $('nav').toggleClass('active');
+        });
 
         // Based on the search keywords filter the list view
         // in the future having a way to filter search maybe cool. This solution does that
@@ -153,16 +159,12 @@ $(document).ready(function() {
             currentMarker.setAnimation(null);
         }
 
-        if (marker.setAnimation() != null) {
-            marker.setAnimation(null);
-        } else {
-            /*This is the call that allows the marker to keep bouncing
-             * letting the user know that it's still an active location
-             * https://developers.google.com/maps/documentation/javascript/examples/marker-animations
-             */
-            marker.setAnimation(google.maps.Animation.BOUNCE);
-            currentMarker = marker;
-        }
+        /*This is the call that allows the marker to keep bouncing
+         * letting the user know that it's still an active location
+         * https://developers.google.com/maps/documentation/javascript/examples/marker-animations
+         */
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        currentMarker = marker;
     }
 
     // clickHandler on location list view
@@ -171,16 +173,12 @@ $(document).ready(function() {
         //http://stackoverflow.com/questions/21960214/google-map-looped-markers-wont-close-previous-infowindow
         for (var i = 0; i < markers().length; i++) {
             markers()[i].infowindow.close();
-            marker[i].setAnimation(null);
         }
         map.setCenter(new google.maps.LatLng(data.location.lat, data.location.lng));
         map.setZoom(15);
         for (var i = 0; i < markers().length; i++) {
-            consol.log('let');
-            marker[i].setAnimation(null);
             var content = markers()[i].content.split('<br>');
             if (data.name === content[0]) {
-
                 toggleBounce(markers()[i]);
             }
         }
