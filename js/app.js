@@ -27,34 +27,6 @@ $(document).ready(function() {
         //I think this is technically two way model binding? /3way model binding??
         //Grab the filter, put it into a data-bind with the input
         self.filter = ko.observable("");
-
-        /*
-
-*/
-
-//  Handle show/hide toggle yourself
-$(function(){
-
-    //  Handle show/hide toggle yourself
-    $(".dropdown").on("click",function(e) {
-        if($(e.currentTarget).hasClass("open"))
-            $(e.currentTarget).toggleClass("open",false);
-        else 
-            $(e.currentTarget).toggleClass("open",true);
-        e.preventDefault(); 
-        return false;
-    });
-
-    //  suppressing default bahavior
-    $(".dropdown").on("hide.bs.dropdown", doNothing);            
-    $(".dropdown").on("show.bs.dropdown", doNothing);
-
-    function doNothing() {
-        e.preventDefault(); 
-        return false;
-    }
-});
-
         var map = initializeMap();
         // check to see if the map is being created or not, if not...let the user know
         if (!map) {
@@ -64,6 +36,13 @@ $(function(){
         self.map = ko.observable(map);
         fetchFoursquare(self.allLocations, self.map(), self.markers);
 
+        /*
+        JS needed to make collapsible menu
+        */
+        $('#mobile-nav').click(function(event) {
+            $('nav').toggleClass('active');
+        });
+
         // Based on the search keywords filter the list view
         // in the future having a way to filter search maybe cool. This solution does that
         //
@@ -72,6 +51,7 @@ $(function(){
                 if (v.name.toLowerCase().indexOf(self.filter().toLowerCase()) !== -1) {
                     if (v.marker)
                         v.marker.setMap(map);
+                        
                 } else {
                     if (v.marker)
                         v.marker.setMap(null);
@@ -198,7 +178,6 @@ $(function(){
         map.setCenter(new google.maps.LatLng(data.location.lat, data.location.lng));
         map.setZoom(15);
         for (var i = 0; i < markers().length; i++) {
-            marker[i].setAnimation(null);
             var content = markers()[i].content.split('<br>');
             if (data.name === content[0]) {
                 toggleBounce(markers()[i]);
