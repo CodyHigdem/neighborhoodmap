@@ -51,7 +51,6 @@ $(document).ready(function() {
                 if (v.name.toLowerCase().indexOf(self.filter().toLowerCase()) !== -1) {
                     if (v.marker)
                         v.marker.setMap(map);
-                        
                 } else {
                     if (v.marker)
                         v.marker.setMap(null);
